@@ -59,11 +59,9 @@ class AliyunProvider {
       return this[keySym];
     }
     let credentials = this.serverless.service.provider.credentials;
-    const credParts = credentials.split(path.sep);
 
-    if (credParts[0] === '~') {
-      credParts[0] = os.homedir();
-      credentials = credParts.reduce((memo, part) => path.join(memo, part), '');
+    if (credentials[0] === '~') {
+      credentials = path.join(os.homedir(), credentials.substr(1));
     }
     const keyFileContent = fs.readFileSync(credentials, 'utf-8').toString();
     // TODO(joyeecheung) support profiles other than [default]
